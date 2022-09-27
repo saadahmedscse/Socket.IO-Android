@@ -13,11 +13,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var count = 0
+        val socket = SocketHandler.getSocket()
+        socket.connect()
 
         binding.buttonIncrease.setOnClickListener {
-            count++
-            binding.counter.text = count.toString()
+            socket.emit("counter")
+        }
+
+        socket.on("counter") { args ->
+            if (args[0] != null) {
+                val counter = args[0] as Int
+
+                runOnUiThread {
+                    binding.counter.text = counter.toString()
+                }
+            }
         }
     }
 }
