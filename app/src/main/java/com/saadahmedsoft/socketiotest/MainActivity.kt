@@ -14,20 +14,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val socket = SocketHandler.getSocket()
-        socket.connect()
+
+        /**
+         * For mobile One
+         */
+        val data = "{'doc': 'Saad', 'uid': '32', 'vid': 'sdf516sdf1'}"
 
         binding.buttonIncrease.setOnClickListener {
-            socket.emit("counter")
+            socket.emit("data", data)
         }
 
-        socket.on("counter") { args ->
-            if (args[0] != null) {
-                val counter = args[0] as Int
+        /**
+         * For mobile two
+         */
+//        socket.on("data") { args ->
+//            if (args[0] != null) {
+//                val counter = args[0] as String
+//
+//                runOnUiThread {
+//                    binding.counter.text = counter
+//                }
+//            }
+//        }
 
-                runOnUiThread {
-                    binding.counter.text = counter.toString()
-                }
-            }
-        }
+        socket.connect()
     }
 }
